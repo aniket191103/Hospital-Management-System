@@ -1,6 +1,5 @@
 import express from "express";
 import { dbConnection } from "./database/dbConnection.js";
-import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
@@ -10,12 +9,15 @@ import userRouter from "./router/userRouter.js";
 import appointmentRouter from "./router/appointmetRouter.js";
 
 const app = express();
-config({ path: "./config.env" });
-//  let FRONTEND_URL=http://localhost:5173/;
+
+// Hardcoded URLs for frontend and backend
+const FRONTEND_URL = "https://hospital-management-system-frontend-vbmr.onrender.com";
+const DASHBOARD_URL = "https://hospital-management-system-dashboard-e8na.onrender.com"; 
+
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL, process.env.DASHBOARD_URL],
-    method: ["GET", "POST", "DELETE", "PUT","Origin"],
+    origin: [FRONTEND_URL, DASHBOARD_URL],
+    method: ["GET", "POST", "DELETE", "PUT", "Origin"],
     credentials: true,
   })
 );
@@ -30,6 +32,7 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
+
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/appointment", appointmentRouter);
@@ -37,4 +40,5 @@ app.use("/api/v1/appointment", appointmentRouter);
 dbConnection();
 
 app.use(errorMiddleware);
+
 export default app;
