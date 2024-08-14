@@ -12,12 +12,12 @@ const app = express();
 
 // Hardcoded URLs for frontend and backend
 const FRONTEND_URL = "https://hospital-management-system-frontend-vbmr.onrender.com";
-const DASHBOARD_URL = "https://hospital-management-system-dashboard-e8na.onrender.com"; 
+const DASHBOARD_URL = "https://hospital-management-system-dashboard-e8na.onrender.com";
 
 app.use(
   cors({
     origin: [FRONTEND_URL, DASHBOARD_URL],
-    method: ["GET", "POST", "DELETE", "PUT", "Origin"],
+    methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
 );
