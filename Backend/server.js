@@ -14,7 +14,7 @@ console.log('PORT:', process.env.PORT);
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
 
 // Connect to MongoDB
-dbConnection();
+// dbConnection();
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
