@@ -17,7 +17,7 @@ const DASHBOARD_URL = "https://hospital-management-system-dashboard-e8na.onrende
 app.use(
   cors({
     origin: [FRONTEND_URL, DASHBOARD_URL],
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    methods: ["GET", "POST", "DELETE", "PUT","Origin"],
     credentials: true,
   })
 );
