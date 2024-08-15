@@ -12,7 +12,9 @@ console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY);
 console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET);
 console.log('PORT:', process.env.PORT);
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
-
+console.log("Expires",JWT_EXPIRES);
+console.log("Cookie expires in",COOKIE_EXPIRES);
+console.log("JWTT KEY,JWT_SECRET_KEY);
 // Connect to MongoDB
 dbConnection();
 
