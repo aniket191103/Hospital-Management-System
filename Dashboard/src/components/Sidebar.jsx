@@ -38,7 +38,7 @@ const Sidebar = () => {
     // Optional: Clear authentication tokens from storage
     localStorage.removeItem("authToken");
     sessionStorage.removeItem("authToken");
-
+ Cookies.removeItem("authToken");
     // Optional: Redirect to login page
     navigateTo("/login");
   } catch (err) {
