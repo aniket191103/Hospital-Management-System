@@ -165,35 +165,27 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
     user,
   });
 });
-
+// Logout function for dashboard admin
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
-  const pastDate = new Date(Date.now() - 1000); // Set to a time in the past
   res
-    .status(200)
+    .status(201)
     .cookie("adminToken", "", {
       httpOnly: true,
-      expires: pastDate,
-      path: "/", // Ensure this matches the path used when setting the cookie
-      domain: "hospital-management-system-dashboard-e8na.onrender.com", // Adjust to your admin domain
-      sameSite: "None", // Adjust based on your needs
-      secure: true, // Set to true if using HTTPS
+      expires: new Date(Date.now()),
     })
     .json({
       success: true,
       message: "Admin Logged Out Successfully.",
     });
 });
+
+// Logout function for frontend patient
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
-  const pastDate = new Date(Date.now() - 1000); // Set to a time in the past
   res
-    .status(200)
+    .status(201)
     .cookie("patientToken", "", {
       httpOnly: true,
-      expires: pastDate,
-      path: "/", // Ensure this matches the path used when setting the cookie
-      domain: "hospital-management-system-frontend-vbmr.onrender.com", // Adjust to your patient domain
-      sameSite: "None", // Adjust based on your needs
-      secure: true, // Set to true if using HTTPS
+      expires: new Date(Date.now()),
     })
     .json({
       success: true,
