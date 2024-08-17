@@ -19,27 +19,34 @@ const Sidebar = () => {
   const navigateTo = useNavigate();
 
   const handleLogout = async () => {
-    try {
-      const res = await axios.get(
-        "https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout",
-        { withCredentials: true }
-      );
-      toast.success(res.data.message);
-      setIsAuthenticated(false);
+  try {
+    // Send logout request to the backend
+    const res = await axios.get(
+      "https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout",
+      { withCredentials: true } // Ensure cookies are sent with the request
+    );
+    
+    // Display success message
+    toast.success(res.data.message);
 
-      // Debugging statement to ensure the state is updated
-      console.log("isAuthenticated after logout:", isAuthenticated);
+    // Update authentication state
+    setIsAuthenticated(false);
 
-      // Optional: Clear any authentication tokens or user data
-      localStorage.removeItem("authToken");
-      sessionStorage.removeItem("authToken");
+    // Debugging statement to check state update
+    console.log("isAuthenticated after logout:", isAuthenticated);
 
-      // Optional: Redirect to login page after logout
-      navigateTo("/login");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Logout failed");
-    }
-  };
+    // Optional: Clear authentication tokens from storage
+    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
+
+    // Optional: Redirect to login page
+    navigateTo("/login");
+  } catch (err) {
+    // Handle errors and display error message
+    const errorMessage = err.response?.data?.message || "Logout failed";
+    toast.error(errorMessage);
+  }
+};
 
   const gotoHomePage = () => {
     navigateTo("/");
