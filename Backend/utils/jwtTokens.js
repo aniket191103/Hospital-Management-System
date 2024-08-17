@@ -1,15 +1,19 @@
+import jwt from 'jsonwebtoken';
+
 export const generateToken = (user, message, statusCode, res) => {
-  const token = user.generateJsonWebToken();
-  // Determine the cookie name based on the user's role
+  const token = user.generateJsonWebToken(); // Ensure this method generates the JWT token correctly
   const cookieName = user.role === 'Admin' ? 'adminToken' : 'patientToken';
+  const cookieExpireDays = process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 7;
+  const cookieExpireDate = new Date(Date.now() + cookieExpireDays * 24 * 60 * 60 * 1000);
 
   res
     .status(statusCode)
     .cookie(cookieName, token, {
-      expires: new Date(
-        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-      ),
+      expires: cookieExpireDate,
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      domain: process.env.NODE_ENV === 'production' ? 'yourproductiondomain.com' : undefined, // Adjust as necessary
     })
     .json({
       success: true,
