@@ -18,20 +18,17 @@ const Sidebar = () => {
 
   const navigateTo = useNavigate();
 
-  const handleLogout = async () => {
-    await axios
-      .get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
-  };
-
+ const handleLogout = async () => {
+  try {
+    const res = await axios.get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout", {
+      withCredentials: true,
+    });
+    toast.success(res.data.message);
+    setIsAuthenticated(false); // Update authentication state
+  } catch (err) {
+    toast.error(err.response?.data.message || "Logout failed."); // Handle error gracefully
+  }
+};
   const gotoHomePage = () => {
     navigateTo("/");
     setShow(!show);
