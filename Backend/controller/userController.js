@@ -196,7 +196,6 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-import { catchAsyncErrors } from "../middleware/catchAsyncErrors.js";
 
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
   res
