@@ -10,7 +10,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { useNavigate } from "react-router-dom";
-
+import Cookies from 'js-cookie';
 const Sidebar = () => {
   const [show, setShow] = useState(false);
 
@@ -35,7 +35,7 @@ const handleLogout = async () => {
     // Optional: Clear authentication tokens from storage
     localStorage.removeItem("authToken");
     sessionStorage.removeItem("authToken");
-
+Cookies.remove('adminToken');
     // Debugging statement to check state update
     console.log("isAuthenticated after logout:", false); // Directly log false since state update is async
 
