@@ -16,6 +16,8 @@ const Sidebar = () => {
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
+  const navigateTo = useNavigate();
+
   const handleLogout = async () => {
     try {
       const res = await axios.get(
@@ -24,30 +26,41 @@ const Sidebar = () => {
       );
       toast.success(res.data.message);
       setIsAuthenticated(false);
-      navigateTo("/login"); // Optional: Redirect to login page after logout
+
+      // Debugging statement to ensure the state is updated
+      console.log("isAuthenticated after logout:", isAuthenticated);
+
+      // Optional: Clear any authentication tokens or user data
+      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("authToken");
+
+      // Optional: Redirect to login page after logout
+      navigateTo("/login");
     } catch (err) {
       toast.error(err.response?.data?.message || "Logout failed");
     }
   };
 
-  const navigateTo = useNavigate();
-
   const gotoHomePage = () => {
     navigateTo("/");
     setShow(!show);
   };
+
   const gotoDoctorsPage = () => {
     navigateTo("/doctors");
     setShow(!show);
   };
+
   const gotoMessagesPage = () => {
     navigateTo("/messages");
     setShow(!show);
   };
+
   const gotoAddNewDoctor = () => {
     navigateTo("/doctor/addnew");
     setShow(!show);
   };
+
   const gotoAddNewAdmin = () => {
     navigateTo("/admin/addnew");
     setShow(!show);
