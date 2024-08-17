@@ -196,13 +196,17 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Logout function for dashboard admin
+import { catchAsyncErrors } from "../middleware/catchAsyncErrors.js";
+
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
   res
-    .status(201)
-    .cookie("adminToken", "", {
+    .status(200)
+    .cookie('adminToken', '', {
+      expires: new Date(0), // Set expiration date to the past
       httpOnly: true,
-      expires: new Date(Date.now()),
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      domain: process.env.NODE_ENV === 'production' ? 'yourproductiondomain.com' : undefined,
     })
     .json({
       success: true,
@@ -210,13 +214,15 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-// Logout function for frontend patient
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
   res
-    .status(201)
-    .cookie("patientToken", "", {
+    .status(200)
+    .cookie('patientToken', '', {
+      expires: new Date(0), // Set expiration date to the past
       httpOnly: true,
-      expires: new Date(Date.now()),
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      domain: process.env.NODE_ENV === 'production' ? 'yourproductiondomain.com' : undefined,
     })
     .json({
       success: true,
