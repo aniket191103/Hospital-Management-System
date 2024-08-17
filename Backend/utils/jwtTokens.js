@@ -13,7 +13,7 @@ export const generateToken = (user, message, statusCode, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      domain: process.env.NODE_ENV === 'production' ? 'yourproductiondomain.com' : undefined, // Adjust as necessary
+      // domain: process.env.NODE_ENV === 'production' ? 'yourproductiondomain.com' : undefined, // Adjust as necessary
     })
     .json({
       success: true,
