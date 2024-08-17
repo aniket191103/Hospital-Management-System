@@ -167,31 +167,30 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
 });
 // Logout function for dashboard admin
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
-  const pastDate = new Date(Date.now() - 1000); // Set to 1 second in the past
   res
-  .status(200)
-  .cookie("adminToken", "", {
-    httpOnly: true,
-    expires: pastDate,
-    path: "/", // Ensure this matches the path used when setting the cookie
-    domain: "hospital-management-system-dashboard-e8na.onrender.com", // Adjust to your admin domain
-
-    secure: true, // Set to true if using HTTPS
-  })
-  .json({
-    success: true,
-    message: "Admin Logged Out Successfully.",
-  });
-// Logout function for frontend patient
-export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
-  const pastDate = new Date(Date.now() - 1000); // Set to 1 second in the past
-  res
-    .status(201)
-    .cookie("patientToken", "", {
+    .status(200)
+    .cookie('adminToken', '', {
+      expires: new Date(0), // Set expiration date to the past
       httpOnly: true,
-       expires: pastDate,
-     
-    secure: true, // Set to true if using HTTPS
+      secure: process.env.NODE_ENV === 'production', // Ensure this is true in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      domain: process.env.NODE_ENV === 'production' ? 'hospital-management-system-dashboard-e8na.onrender.com' : undefined, // Adjust if needed
+    })
+    .json({
+      success: true,
+      message: "Admin Logged Out Successfully.",
+    });
+});
+
+export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
+  res
+    .status(200)
+    .cookie('patientToken', '', {
+      expires: new Date(0), // Set expiration date to the past
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Ensure this is true in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      domain: process.env.NODE_ENV === 'production' ? 'hospital-management-system-frontend-vbmr.onrender.com' : undefined, // Adjust if needed
     })
     .json({
       success: true,
