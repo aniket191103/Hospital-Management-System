@@ -198,17 +198,18 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
 
 
 // Logout function for dashboard admin
-const logoutAdmin = async () => {
-  try {
-    const res = await axios.get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout", {
-      withCredentials: true,
+export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
+  res
+    .status(201)
+    .cookie("adminToken", "", {
+      httpOnly: true,
+      expires: new Date(Date.now()),
+    })
+    .json({
+      success: true,
+      message: "Admin Logged Out Successfully.",
     });
-    toast.success(res.data.message);
-    setIsAuthenticated(false); // Update authentication state
-  } catch (err) {
-    toast.error(err.response?.data.message || "Logout failed."); // Handle error gracefully
-  }
-};
+});
 
 // Logout function for frontend patient
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
