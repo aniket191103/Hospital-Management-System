@@ -202,10 +202,10 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
     .status(200)
     .cookie('adminToken', '', {
       expires: new Date(0), // Set expiration date to the past
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      domain: process.env.NODE_ENV === 'production' ? 'https://hospital-management-system-dashboard-e8na.onrender.com/' : undefined,
+      // httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
+      // sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      // domain: process.env.NODE_ENV === 'production' ? 'https://hospital-management-system-dashboard-e8na.onrender.com/' : undefined,
     })
     .json({
       success: true,
@@ -218,10 +218,10 @@ export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
     .status(200)
     .cookie('patientToken', '', {
       expires: new Date(0), // Set expiration date to the past
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      domain: process.env.NODE_ENV === 'production' ? 'https://hospital-management-system-frontend-vbmr.onrender.com/' : undefined,
+      // httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
+      // sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      // domain: process.env.NODE_ENV === 'production' ? 'https://hospital-management-system-frontend-vbmr.onrender.com/' : undefined,
     })
     .json({
       success: true,
