@@ -18,41 +18,19 @@ const Sidebar = () => {
 
   const navigateTo = useNavigate();
 
-const handleLogout = async () => {
-  try {
-    // Send logout request to the backend
-    const res = await axios.get(
-      "https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout",
-      { withCredentials: true } // Ensure cookies are sent with the request
-    );
-
-    // Display success message
-    toast.success(res.data.message);
-
-    // Update authentication state
-    setIsAuthenticated(false);
-
-    // Optional: Clear authentication tokens from storage
-    localStorage.removeItem("authToken");
-    sessionStorage.removeItem("authToken");
-Cookies.remove('adminToken');
-    // Debugging statement to check state update
-    console.log("isAuthenticated after logout:", false); // Directly log false since state update is async
-
-    // Optional: Redirect to login page
-    navigateTo("/login");
-  } catch (err) {
-    // Handle errors and display error message
-    const errorMessage = err.response?.data?.message || "Logout failed";
-    toast.error(errorMessage);
-  }
-};
-
-// Optional: Use useEffect to log the state when it changes
-useEffect(() => {
-  console.log("isAuthenticated state changed:", isAuthenticated);
-}, [isAuthenticated]);
-
+  const handleLogout = async () => {
+    await axios
+      .get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        setIsAuthenticated(false);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
 
   const gotoHomePage = () => {
     navigateTo("/");
