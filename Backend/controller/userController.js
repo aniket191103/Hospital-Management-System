@@ -4,11 +4,19 @@ import ErrorHandler from "../middleware/error.js";
 import { generateToken } from "../utils/jwtTokens.js";
 import cloudinary from "cloudinary";
 
-// Patient Registration
 export const patientRegister = catchAsyncErrors(async (req, res, next) => {
-  const { firstName, lastName, email, phone, nic, dob, gender, password } = req.body;
-
-  if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender || !password) {
+  const { firstName, lastName, email, phone, nic, dob, gender, password } =
+    req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !nic ||
+    !dob ||
+    !gender ||
+    !password
+  ) {
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
 
@@ -28,44 +36,49 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
     password,
     role: "Patient",
   });
-
   generateToken(user, "User Registered!", 200, res);
 });
 
-// Login Function
 export const login = catchAsyncErrors(async (req, res, next) => {
   const { email, password, confirmPassword, role } = req.body;
-
   if (!email || !password || !confirmPassword || !role) {
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
-
   if (password !== confirmPassword) {
-    return next(new ErrorHandler("Password & Confirm Password Do Not Match!", 400));
+    return next(
+      new ErrorHandler("Password & Confirm Password Do Not Match!", 400)
+    );
   }
-
   const user = await User.findOne({ email }).select("+password");
   if (!user) {
     return next(new ErrorHandler("Invalid Email Or Password!", 400));
+
+    
   }
 
   const isPasswordMatch = await user.comparePassword(password);
   if (!isPasswordMatch) {
     return next(new ErrorHandler("Invalid Email Or Password!", 400));
   }
-
   if (role !== user.role) {
-    return next(new ErrorHandler("User Not Found With This Role!", 400));
+    return next(new ErrorHandler(`User Not Found With This Role!`, 400));
   }
-
   generateToken(user, "Login Successfully!", 201, res);
 });
 
-// Add New Admin
 export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
-  const { firstName, lastName, email, phone, nic, dob, gender, password } = req.body;
-
-  if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender || !password) {
+  const { firstName, lastName, email, phone, nic, dob, gender, password } =
+    req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !nic ||
+    !dob ||
+    !gender ||
+    !password
+  ) {
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
 
@@ -85,7 +98,6 @@ export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
     password,
     role: "Admin",
   });
-
   res.status(200).json({
     success: true,
     message: "New Admin Registered",
@@ -93,37 +105,58 @@ export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Add New Doctor
 export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return next(new ErrorHandler("Doctor Avatar Required!", 400));
   }
-
   const { docAvatar } = req.files;
   const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
   if (!allowedFormats.includes(docAvatar.mimetype)) {
     return next(new ErrorHandler("File Format Not Supported!", 400));
   }
-
-  const { firstName, lastName, email, phone, nic, dob, gender, password, doctorDepartment } = req.body;
-
-  if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender || !password || !doctorDepartment || !docAvatar) {
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    nic,
+    dob,
+    gender,
+    password,
+    doctorDepartment,
+  } = req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !nic ||
+    !dob ||
+    !gender ||
+    !password ||
+    !doctorDepartment ||
+    !docAvatar
+  ) {
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
-
   const isRegistered = await User.findOne({ email });
   if (isRegistered) {
-    return next(new ErrorHandler("Doctor With This Email Already Exists!", 400));
+    return next(
+      new ErrorHandler("Doctor With This Email Already Exists!", 400)
+    );
   }
-
-  let cloudinaryResponse;
-  try {
-    cloudinaryResponse = await cloudinary.uploader.upload(docAvatar.tempFilePath);
-  } catch (error) {
-    console.error("Cloudinary Error:", error);
-    return next(new ErrorHandler("Failed To Upload Doctor Avatar To Cloudinary", 500));
+  const cloudinaryResponse = await cloudinary.uploader.upload(
+    docAvatar.tempFilePath
+  );
+  if (!cloudinaryResponse || cloudinaryResponse.error) {
+    console.error(
+      "Cloudinary Error:",
+      cloudinaryResponse.error || "Unknown Cloudinary error"
+    );
+    return next(
+      new ErrorHandler("Failed To Upload Doctor Avatar To Cloudinary", 500)
+    );
   }
-
   const doctor = await User.create({
     firstName,
     lastName,
@@ -140,7 +173,6 @@ export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
       url: cloudinaryResponse.secure_url,
     },
   });
-
   res.status(200).json({
     success: true,
     message: "New Doctor Registered",
@@ -148,7 +180,6 @@ export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Get All Doctors
 export const getAllDoctors = catchAsyncErrors(async (req, res, next) => {
   const doctors = await User.find({ role: "Doctor" });
   res.status(200).json({
@@ -157,7 +188,6 @@ export const getAllDoctors = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Get User Details
 export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = req.user;
   res.status(200).json({
@@ -165,16 +195,14 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
     user,
   });
 });
+
 // Logout function for dashboard admin
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
   res
-    .status(200)
-    .cookie('adminToken', '', {
-      expires: new Date(0), // Set expiration date to the past
+    .status(201)
+    .cookie("adminToken", "", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Ensure this is true in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      domain: process.env.NODE_ENV === 'production' ? 'hospital-management-system-dashboard-e8na.onrender.com' : undefined, // Adjust if needed
+      expires: new Date(Date.now()),
     })
     .json({
       success: true,
@@ -182,15 +210,13 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+// Logout function for frontend patient
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
   res
-    .status(200)
-    .cookie('patientToken', '', {
-      expires: new Date(0), // Set expiration date to the past
+    .status(201)
+    .cookie("patientToken", "", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Ensure this is true in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      domain: process.env.NODE_ENV === 'production' ? 'hospital-management-system-frontend-vbmr.onrender.com' : undefined, // Adjust if needed
+      expires: new Date(Date.now()),
     })
     .json({
       success: true,
