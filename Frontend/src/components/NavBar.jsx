@@ -9,19 +9,21 @@ const Navbar = () => {
   const [show, setShow] = useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-  const handleLogout = async () => {
-    await axios
-      .get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/patient/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
-  };
+ const handleLogout = async () => {
+  try {
+    const res = await axios.get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/patient/logout", {
+      withCredentials: true, // Ensure cookies are sent with the request
+    });
+    toast.success(res.data.message);
+    setIsAuthenticated(false);
+    window.location.href = '/'; // Redirect to home or login page
+  } catch (err) {
+    // Handle errors based on the response structure
+    const errorMessage = err.response?.data?.message || 'An error occurred';
+    toast.error(errorMessage);
+  }
+};
+
 
   const navigateTo = useNavigate();
 
