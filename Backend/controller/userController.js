@@ -198,7 +198,7 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
 
 
 // Logout function for dashboard admin
-const handleLogout = async () => {
+const logoutAdmin = async () => {
   try {
     const res = await axios.get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout", {
       withCredentials: true,
