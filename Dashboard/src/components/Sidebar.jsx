@@ -18,27 +18,27 @@ const Sidebar = () => {
 
   const navigateTo = useNavigate();
 
-  const handleLogout = async () => {
+const handleLogout = async () => {
   try {
     // Send logout request to the backend
     const res = await axios.get(
       "https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/admin/logout",
       { withCredentials: true } // Ensure cookies are sent with the request
     );
-    
+
     // Display success message
-    setIsAuthenticated(false);
     toast.success(res.data.message);
 
     // Update authentication state
-    // setIsAuthenticated(false);
-
-    // Debugging statement to check state update
-    console.log("isAuthenticated after logout:", isAuthenticated);
+    setIsAuthenticated(false);
 
     // Optional: Clear authentication tokens from storage
     localStorage.removeItem("authToken");
     sessionStorage.removeItem("authToken");
+
+    // Debugging statement to check state update
+    console.log("isAuthenticated after logout:", false); // Directly log false since state update is async
+
     // Optional: Redirect to login page
     navigateTo("/login");
   } catch (err) {
@@ -47,6 +47,12 @@ const Sidebar = () => {
     toast.error(errorMessage);
   }
 };
+
+// Optional: Use useEffect to log the state when it changes
+useEffect(() => {
+  console.log("isAuthenticated state changed:", isAuthenticated);
+}, [isAuthenticated]);
+
 
   const gotoHomePage = () => {
     navigateTo("/");
