@@ -205,7 +205,7 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      domain: process.env.NODE_ENV === 'production' ? 'yourproductiondomain.com' : undefined,
+      domain: process.env.NODE_ENV === 'production' ? 'https://hospital-management-system-dashboard-e8na.onrender.com/' : undefined,
     })
     .json({
       success: true,
@@ -221,7 +221,7 @@ export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      domain: process.env.NODE_ENV === 'production' ? 'yourproductiondomain.com' : undefined,
+      domain: process.env.NODE_ENV === 'production' ? 'https://hospital-management-system-frontend-vbmr.onrender.com/' : undefined,
     })
     .json({
       success: true,
