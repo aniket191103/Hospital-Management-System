@@ -202,8 +202,12 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
   res
     .status(201)
     .cookie("adminToken", "", {
-      httpOnly: true,
-      expires: new Date(Date.now()),
+      httpOnly: true, 
+      expires: new Date(0), // Expire immediately
+      secure: process.env.NODE_ENV === 'production', // Ensure this is true in production (HTTPS)
+      sameSite: 'None', // Required for cross-site cookies, set to 'Lax' or 'Strict' if not cross-domain
+      domain: 'hospital-management-system-dashboard-e8na.onrender.com', // Match your admin dashboard domain
+      path: '/', // Ensure the cookie is accessible across your site
     })
     .json({
       success: true,
@@ -216,11 +220,16 @@ export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
   res
     .status(201)
     .cookie('patientToken', '', {
-     httpOnly: true,
-      expires: new Date(Date.now()),
+      httpOnly: true, 
+      expires: new Date(0), // Expire immediately
+      secure: process.env.NODE_ENV === 'production', // Ensure this is true in production (HTTPS)
+      sameSite: 'None', // Required for cross-site cookies, set to 'Lax' or 'Strict' if not cross-domain
+      domain: 'hospital-management-system-frontend-vbmr.onrender.com', // Match your frontend domain
+      path: '/', // Ensure the cookie is accessible across your site
     })
     .json({
       success: true,
       message: "Patient Logged Out Successfully.",
     });
 });
+
