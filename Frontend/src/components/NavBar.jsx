@@ -9,9 +9,7 @@ const Navbar = () => {
   const [show, setShow] = useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
- 
-
-const handleLogout = async () => {
+  const handleLogout = async () => {
     await axios
       .get("https://hospital-management-system-backend-tid9.onrender.com/api/v1/user/patient/logout", {
         withCredentials: true,
@@ -24,6 +22,7 @@ const handleLogout = async () => {
         toast.error(err.response.data.message);
       });
   };
+  
   const navigateTo = useNavigate();
 
   const goToLogin = () => {
@@ -38,13 +37,13 @@ const handleLogout = async () => {
         </div>
         <div className={show ? "navLinks showmenu" : "navLinks"}>
           <div className="links">
-            <Link to={"/"} onClick={() => setShow(!show)}>
+            <Link to={"/"} onClick={() => setShow(false)}>
               Home
             </Link>
-            <Link to={"/appointment"} onClick={() => setShow(!show)}>
+            <Link to={"/appointment"} onClick={() => setShow(false)}>
               Appointment
             </Link>
-            <Link to={"/about"} onClick={() => setShow(!show)}>
+            <Link to={"/about"} onClick={() => setShow(false)}>
               About Us
             </Link>
           </div>
@@ -52,13 +51,13 @@ const handleLogout = async () => {
             <button className="logoutBtn btn btn-31" onClick={handleLogout}>
               <span className="text-container">
                 <span className="text">LogOut</span>
-                </span>
+              </span>
             </button>
           ) : (
             <button className="loginBtn btn btn-31" onClick={goToLogin}>
-             <span className="text-container">
+              <span className="text-container">
                 <span className="text">LogIn</span>
-                </span>
+              </span>
             </button>
           )}
         </div>
