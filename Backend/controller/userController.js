@@ -199,15 +199,16 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
 
 // Logout function for dashboard admin
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
+  res.set('Clear-Site-Data', '"cookies"');
   res
     .status(201)
     .cookie("adminToken", "", {
-      httpOnly: true, 
-      expires: new Date(0), // Expire immediately
-      secure: process.env.NODE_ENV === 'production', // Ensure this is true in production (HTTPS)
-      sameSite: 'None', // Required for cross-site cookies, set to 'Lax' or 'Strict' if not cross-domain
-      domain: 'hospital-management-system-dashboard-e8na.onrender.com', // Match your admin dashboard domain
-      path: '/', // Ensure the cookie is accessible across your site
+      httpOnly: true,
+      expires: new Date(0),
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'None',
+      domain: 'hospital-management-system-dashboard-e8na.onrender.com',
+      path: '/',
     })
     .json({
       success: true,
@@ -217,6 +218,7 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
 
 // Logout function for frontend patient
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
+   res.set('Clear-Site-Data', '"cookies"');
   res
     .status(201)
     .cookie('patientToken', '', {
